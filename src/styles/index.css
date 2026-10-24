@@ -1,0 +1,193 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------ design tokens
+   Every colour is a token so the palette can change in one place. Utilities such as
+   bg-surface or text-muted map to these variables and follow the active theme. */
+:root {
+  --ilc-bg: #faf7f0;
+  --ilc-surface: #ffffff;
+  --ilc-surface-2: #f4f0e6;
+  --ilc-ink: #1e2420;
+  --ilc-muted: #59605b;
+  --ilc-border: #e3dccd;
+  --ilc-border-strong: #c9bfaa;
+  --ilc-primary: #1f4d3a;
+  --ilc-primary-hover: #173d2e;
+  --ilc-primary-soft: #e6efe9;
+  --ilc-on-primary: #ffffff;
+  --ilc-sage: #6f8d77;
+  --ilc-sage-soft: #e9efe8;
+  --ilc-gold: #8a6a1f;
+  --ilc-gold-line: #c6a75a;
+  --ilc-gold-soft: #f6eedb;
+  --ilc-success: #2f6f47;
+  --ilc-success-soft: #e5f1e8;
+  --ilc-warning: #845400;
+  --ilc-warning-soft: #fbf0d9;
+  --ilc-error: #a3271d;
+  --ilc-error-soft: #fbe9e7;
+  --ilc-info: #1f5673;
+  --ilc-info-soft: #e5f0f5;
+  --ilc-focus: #1f4d3a;
+  --ilc-shadow: 0 1px 2px rgb(30 36 32 / 0.06), 0 2px 8px rgb(30 36 32 / 0.04);
+  --arabic-scale: 1;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --ilc-bg: #121614;
+  --ilc-surface: #1a201c;
+  --ilc-surface-2: #222a25;
+  --ilc-ink: #ece8df;
+  --ilc-muted: #a9b1ab;
+  --ilc-border: #2e3832;
+  --ilc-border-strong: #45514a;
+  --ilc-primary: #86c7a5;
+  --ilc-primary-hover: #a0d6b9;
+  --ilc-primary-soft: #1f342a;
+  --ilc-on-primary: #0d1a13;
+  --ilc-sage: #9bb5a2;
+  --ilc-sage-soft: #233029;
+  --ilc-gold: #d7b46a;
+  --ilc-gold-line: #8f7640;
+  --ilc-gold-soft: #2d2718;
+  --ilc-success: #86cf9f;
+  --ilc-success-soft: #1d3326;
+  --ilc-warning: #e6bb62;
+  --ilc-warning-soft: #33290f;
+  --ilc-error: #f19a8f;
+  --ilc-error-soft: #3a1f1c;
+  --ilc-info: #8cc5e2;
+  --ilc-info-soft: #18303b;
+  --ilc-focus: #a0d6b9;
+  --ilc-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--ilc-bg);
+  --color-surface: var(--ilc-surface);
+  --color-surface-2: var(--ilc-surface-2);
+  --color-ink: var(--ilc-ink);
+  --color-muted: var(--ilc-muted);
+  --color-line: var(--ilc-border);
+  --color-line-strong: var(--ilc-border-strong);
+  --color-primary: var(--ilc-primary);
+  --color-primary-hover: var(--ilc-primary-hover);
+  --color-primary-soft: var(--ilc-primary-soft);
+  --color-on-primary: var(--ilc-on-primary);
+  --color-sage: var(--ilc-sage);
+  --color-sage-soft: var(--ilc-sage-soft);
+  --color-gold: var(--ilc-gold);
+  --color-gold-line: var(--ilc-gold-line);
+  --color-gold-soft: var(--ilc-gold-soft);
+  --color-success: var(--ilc-success);
+  --color-success-soft: var(--ilc-success-soft);
+  --color-warning: var(--ilc-warning);
+  --color-warning-soft: var(--ilc-warning-soft);
+  --color-error: var(--ilc-error);
+  --color-error-soft: var(--ilc-error-soft);
+  --color-info: var(--ilc-info);
+  --color-info-soft: var(--ilc-info-soft);
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-quran: 'Amiri Quran', 'Amiri', 'Scheherazade New', 'Noto Naskh Arabic', serif;
+  --font-arabic: 'Amiri', 'Scheherazade New', 'Noto Naskh Arabic', serif;
+  --shadow-card: var(--ilc-shadow);
+}
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ------------------------------------------------------------------ base */
+@layer base {
+  html {
+    background: var(--ilc-bg);
+    color: var(--ilc-ink);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    min-height: 100dvh;
+  }
+  :focus-visible {
+    outline: 3px solid var(--ilc-focus);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: var(--ilc-gold-soft);
+    color: var(--ilc-ink);
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+/* ------------------------------------------------------------------ Arabic */
+@layer components {
+  /* Quranic text: generous line height so stacked diacritics never clip. */
+  .quran-text {
+    font-family: var(--font-quran);
+    font-size: calc(1.9rem * var(--arabic-scale));
+    line-height: 2.35;
+    word-spacing: 0.06em;
+    font-feature-settings: 'calt', 'liga';
+  }
+  .arabic-text {
+    font-family: var(--font-arabic);
+    font-size: calc(1.55rem * var(--arabic-scale));
+    line-height: 2.1;
+  }
+  .arabic-inline {
+    font-family: var(--font-arabic);
+    font-size: 1.25em;
+    line-height: 1.6;
+  }
+  .verse-marker {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-feature-settings: 'tnum';
+  }
+}
+
+/* ------------------------------------------------------------------ motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+:root[data-reduce-motion='true'] *,
+:root[data-reduce-motion='true'] *::before,
+:root[data-reduce-motion='true'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+@keyframes ilc-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-fade-in {
+  animation: ilc-fade-in 180ms ease-out;
+}
